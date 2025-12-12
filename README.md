@@ -1,2 +1,1 @@
-# Frontend
-Web Version of Verinest
+# Web Version of Verinest
