@@ -37,7 +37,7 @@ interface PersonalInformationFormProps {
 
 export interface PersonalInfoData {
 	documentType:
-		| "nin"
+		| "NIN"
 		| "drivers_license"
 		| "voters_card"
 		| "international_passport";
@@ -56,7 +56,7 @@ export const PersonalInformationForm = ({
 	initialData,
 }: PersonalInformationFormProps) => {
 	const [formData, setFormData] = useState<PersonalInfoData>({
-		documentType: "nin",
+		documentType: "NIN",
 		documentId: "",
 		nationality: "Nigerian",
 		stateOfOrigin: "",
@@ -145,10 +145,10 @@ export const PersonalInformationForm = ({
 
 	const getDocumentTypeLabel = (type: string) => {
 		const labels: Record<string, string> = {
-			nin: "National Identity Number (NIN)",
-			drivers_license: "Driver's License",
-			voters_card: "Voter's Card",
-			international_passport: "International Passport",
+			NIN: "National Identitification Number (NIN)",
+			drivers_license: "Driver's License Number (or RID#)",
+			voters_card: "Voter's Identification Number (VIN)",
+			international_passport: "International Passport Number",
 		};
 		return labels[type] || type;
 	};
@@ -197,8 +197,9 @@ export const PersonalInformationForm = ({
 										<SelectValue placeholder="Select document type" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="nin">
-											National Identity Number (NIN)
+										<SelectItem value="NIN">
+											National Identitification Number
+											(NIN)
 										</SelectItem>
 										<SelectItem value="drivers_license">
 											Driver's License
@@ -221,7 +222,7 @@ export const PersonalInformationForm = ({
 									{getDocumentTypeLabel(
 										formData.documentType
 									)}{" "}
-									Number *
+									*
 								</Label>
 								<Input
 									id="documentId"
@@ -232,7 +233,7 @@ export const PersonalInformationForm = ({
 											e.target.value
 										)
 									}
-									placeholder={`Enter your ${getDocumentTypeLabel(formData.documentType).toLowerCase()} number`}
+									placeholder={`Enter your ${getDocumentTypeLabel(formData.documentType)}`}
 									className={cn(
 										errors.documentId && "border-red-500"
 									)}
@@ -501,25 +502,26 @@ export const PersonalInformationForm = ({
 						</Alert>
 
 						{/* Navigation Buttons */}
-						<div className="flex justify-between pt-6">
+						<div className="flex flex-col-reverse md:flex-row justify-between pt-6 gap-2">
 							{onBack && (
 								<Button
 									variant="outline"
 									onClick={onBack}
 									type="button"
 									size="lg"
+									className="w-full"
 								>
-									<ArrowLeft className="h-4 w-4 mr-2" />
+									<ArrowLeft className="h-4 w-4" />
 									Back
 								</Button>
 							)}
 							<Button
 								type="submit"
-								className="bg-blue-600 hover:bg-blue-700 ml-auto"
+								className="w-full bg-blue-600 hover:bg-blue-700 ml-auto"
 								size="lg"
 							>
 								Continue to Document Scan
-								<ArrowRight className="h-4 w-4 ml-2" />
+								<ArrowRight className="h-4 w-4" />
 							</Button>
 						</div>
 					</form>

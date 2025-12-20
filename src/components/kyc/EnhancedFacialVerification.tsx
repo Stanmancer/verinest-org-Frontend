@@ -242,7 +242,7 @@ export const EnhancedFacialVerification = ({ onComplete, onBack }: EnhancedFacia
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-2">
+      <div className="md:flex gap-8">
         {/* Camera Section */}
         <Card className="bg-white border-gray-200">
           <CardHeader className="pb-4">
@@ -348,11 +348,11 @@ export const EnhancedFacialVerification = ({ onComplete, onBack }: EnhancedFacia
                   </div>
                 </div>
                 
-                <div className="flex gap-3">
+                <div className="flex md:flex-row flex-col items-center justify-between gap-3">
                   <Button 
                     onClick={retakePhoto} 
                     variant="outline" 
-                    className="flex-1" 
+                    className="w-full" 
                     disabled={loading}
                     size="lg"
                   >
@@ -362,7 +362,7 @@ export const EnhancedFacialVerification = ({ onComplete, onBack }: EnhancedFacia
                   <Button 
                     onClick={uploadImage} 
                     disabled={loading} 
-                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                    className="w-full bg-blue-600 hover:bg-blue-700"
                     size="lg"
                   >
                     {loading ? (
@@ -444,12 +444,12 @@ export const EnhancedFacialVerification = ({ onComplete, onBack }: EnhancedFacia
             {/* Professional Tips */}
             <div className="bg-blue-100/50 rounded-lg p-4 border border-blue-200">
               <h4 className="font-semibold text-blue-900 text-sm mb-2">Professional Standards</h4>
-              <ul className="text-blue-800 text-xs space-y-1">
-                <li>• Business casual or professional attire recommended</li>
-                <li>• Ensure face is clearly visible without shadows</li>
-                <li>• Maintain professional demeanor and expression</li>
-                <li>• Avoid hats, sunglasses, or face coverings</li>
-                <li>• Use high-quality camera settings</li>
+              <ul className="list-disc list-inside text-blue-800 text-xs space-y-1">
+                <li>Business casual or professional attire recommended</li>
+                <li>Ensure face is clearly visible without shadows</li>
+                <li>Maintain professional demeanor and expression</li>
+                <li>Avoid hats, sunglasses, or face coverings</li>
+                <li>Use high-quality camera settings</li>
               </ul>
             </div>
           </CardContent>

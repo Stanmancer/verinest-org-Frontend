@@ -353,6 +353,7 @@ export const EnhancedImageUpload = ({
 			{/* Upload Method Selection */}
 			<div className="flex justify-center">
 				<div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-1">
+					{/* camera scan */}
 					<button
 						onClick={() => setUploadMethod("camera")}
 						className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -364,6 +365,7 @@ export const EnhancedImageUpload = ({
 						<Camera className="h-4 w-4 mr-2 inline" />
 						Camera Scan
 					</button>
+					{/* Phone Upload */}
 					<button
 						onClick={() => setUploadMethod("phone")}
 						className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -394,7 +396,7 @@ export const EnhancedImageUpload = ({
 					<CardContent className="space-y-6">
 						{!capturedImage ? (
 							<div className="space-y-4">
-								<div className="relative bg-gray-900 rounded-xl overflow-hidden aspect-[4/3]">
+								<div className="relative bg-gray-900 rounded-xl overflow-none aspect-[3/4] md:aspect-[4/3]">
 									<video
 										ref={videoRef}
 										autoPlay
@@ -405,10 +407,9 @@ export const EnhancedImageUpload = ({
 
 									{/* Document frame overlay - simplified without visible edge detection */}
 									<div className="absolute inset-0 flex items-center justify-center">
-										<div className="w-80 h-52 border-2 border-dashed border-green-400 rounded-lg pointer-events-none">
-											{/* Center alignment guide only */}
-											<div className="absolute inset-0 border border-white/30 rounded-lg m-2"></div>
-										</div>
+										{/* <div className="w-1/2 h-1/2 border-2 border-dashed border-green-400 rounded-lg pointer-events-none"></div> */}
+										{/* Center alignment guide only */}
+										<div className="absolute inset-0 border border-white/30 rounded-lg m-2"></div>
 									</div>
 
 									{!stream && (
@@ -452,18 +453,18 @@ export const EnhancedImageUpload = ({
 							</div>
 						) : (
 							<div className="space-y-4">
-								<div className="relative bg-gray-900 rounded-xl overflow-hidden aspect-[4/3]">
+								<div className="relative bg-gray-900 rounded-xl overflow-hidden aspect-[3/4] md:aspect-[4/3]">
 									<img
 										src={capturedImage}
 										alt="Scanned document"
-										className="w-full h-full object-contain bg-white"
+										className="w-full h-full object-contain "
 									/>
 									<div className="absolute top-4 right-4">
 										<CheckCircle className="h-6 w-6 text-green-500" />
 									</div>
 								</div>
 
-								<div className="flex gap-3">
+								<div className="flex flex-col-reverse md:flex-row items-center gap-3">
 									<Button
 										onClick={() => {
 											setCapturedImage("");
@@ -471,7 +472,7 @@ export const EnhancedImageUpload = ({
 											startCamera();
 										}}
 										variant="outline"
-										className="flex-1"
+										className="w-full"
 										disabled={loading}
 										size="lg"
 									>
@@ -481,7 +482,7 @@ export const EnhancedImageUpload = ({
 									<Button
 										onClick={processAndUploadDocument}
 										disabled={loading}
-										className="flex-1 bg-blue-600 hover:bg-blue-700"
+										className="w-full bg-blue-600 hover:bg-blue-700"
 										size="lg"
 									>
 										{loading ? (
@@ -696,6 +697,20 @@ export const EnhancedImageUpload = ({
 					</p>
 				</CardContent>
 			</Card>
+
+			{onBack && (
+				<div className="flex justify-start pt-6">
+					<Button
+						variant="outline"
+						onClick={onBack}
+						disabled={loading}
+						size="lg"
+					>
+						<ArrowLeft className="h-4 w-4 mr-2" />
+						Back to Previous Step
+					</Button>
+				</div>
+			)}
 		</div>
 	);
 };

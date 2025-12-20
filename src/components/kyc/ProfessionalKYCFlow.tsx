@@ -1,5 +1,5 @@
 // components/professional-kyc/CompleteProfessionalKYCFlow.tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
@@ -255,9 +255,14 @@ export const ProfessionalKYCFlow = () => {
 					);
 				}
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error("❌ Submission failed:", error);
-			toast.error(error.message || "Failed to submit verification");
+
+			if (error instanceof Error) {
+				toast.error(error.message);
+			} else {
+				toast.error("Failed to submit verification");
+			}
 		} finally {
 			setLoading(false);
 		}
@@ -343,7 +348,7 @@ export const ProfessionalKYCFlow = () => {
 								<Button
 									onClick={() => setCurrentStep("terms")}
 									size="lg"
-									className="bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg"
+									className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg"
 								>
 									Begin Professional Verification
 									<ArrowRight className="h-5 w-5 ml-2" />
@@ -361,12 +366,11 @@ export const ProfessionalKYCFlow = () => {
 				return (
 					<div className="space-y-6">
 						<div
-							className="h-[500px] overflow-y-auto border rounded-lg"
-							onScroll={handleTermsScroll}
+							className="overflow-y-hidden border rounded-lg"
 						>
-							<TermsAndConditions />
+							<TermsAndConditions onScroll={handleTermsScroll} />
 						</div>
-						<div className="flex justify-between">
+						<div className="flex flex-col-reverse md:flex-row justify-between">
 							<Button
 								variant="outline"
 								onClick={() => setCurrentStep("welcome")}
@@ -392,12 +396,12 @@ export const ProfessionalKYCFlow = () => {
 				return (
 					<div className="space-y-6">
 						<div
-							className="h-[500px] overflow-y-auto border rounded-lg"
-							onScroll={handlePrivacyScroll}
+							className="overflow-y-hidden border rounded-lg"
+							// onScroll={handlePrivacyScroll}
 						>
-							<PrivacyPolicy />
+							<PrivacyPolicy onScroll={handlePrivacyScroll} />
 						</div>
-						<div className="flex justify-between">
+						<div className="flex flex-col-reverse md:flex-row justify-between">
 							<Button
 								variant="outline"
 								onClick={() => setCurrentStep("terms")}
@@ -433,7 +437,12 @@ export const ProfessionalKYCFlow = () => {
 						onDocumentCapture={handleDocumentCapture}
 						onBack={() => setCurrentStep("personal")}
 						documentType={
-							verificationData.personalInfo.documentType as any
+							verificationData.personalInfo.documentType as
+								| "drivers_license"
+								| "id_card"
+								| "passport"
+								| "other"
+								| undefined
 						}
 					/>
 				);
@@ -582,7 +591,7 @@ export const ProfessionalKYCFlow = () => {
 								</AlertDescription>
 							</Alert>
 
-							<div className="flex justify-between pt-4">
+							<div className="flex flex-col md:flex-row gap-3 justify-between pt-4">
 								<Button
 									variant="outline"
 									onClick={() => setCurrentStep("facial")}
@@ -670,7 +679,7 @@ export const ProfessionalKYCFlow = () => {
 								<Button
 									onClick={() => navigate("/dashboard")}
 									size="lg"
-									className="bg-green-600 hover:bg-green-700 px-8 py-3 text-lg"
+									className="w-full bg-green-600 hover:bg-green-700 px-8 py-3 text-lg"
 								>
 									Continue to Dashboard
 								</Button>
@@ -689,6 +698,19 @@ export const ProfessionalKYCFlow = () => {
 		(step) => step.key === currentStep
 	);
 
+	const stepRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+	useEffect(() => {
+		const el = stepRefs.current[currentStepIndex];
+		if (!el) return;
+
+		el.scrollIntoView({
+			behavior: "smooth",
+			inline: "center",
+			block: "nearest",
+		});
+	}, [currentStepIndex]);
+
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
 			<div className="container mx-auto px-4 max-w-4xl">
@@ -704,11 +726,12 @@ export const ProfessionalKYCFlow = () => {
 				</div>
 
 				{/* Enhanced Progress Steps */}
-				<div className="mb-12">
-					<div className="flex justify-between items-center mb-4">
+				<div className="mb-12 ">
+					<div className="flex justify-between items-start mb-4 p-1 overflow-x-auto flex-nowrap no-scrollbar gap-1">
 						{steps.map((step, index) => (
 							<div
 								key={step.key}
+								ref={(el) => (stepRefs.current[index] = el)}
 								className="flex flex-col items-center flex-1 relative"
 							>
 								<div
@@ -716,7 +739,7 @@ export const ProfessionalKYCFlow = () => {
 										index <= currentStepIndex
 											? "bg-blue-600 border-blue-600 text-white shadow-lg"
 											: "border-gray-300 text-gray-400 bg-white"
-									} ${index === currentStepIndex ? "ring-4 ring-blue-200 scale-110" : ""}`}
+									} ${index === currentStepIndex ? "ring-4 ring-blue-200" : ""}`}
 								>
 									<step.icon className="h-6 w-6" />
 								</div>
@@ -753,7 +776,7 @@ export const ProfessionalKYCFlow = () => {
 				</div>
 
 				{/* Step Content */}
-				<div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+				<div className="w-full rounded-2xl shadow-xl border border-gray-100 p-4 md:p-8">
 					{getStepContent()}
 				</div>
 

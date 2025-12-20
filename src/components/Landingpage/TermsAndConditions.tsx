@@ -8,9 +8,13 @@ import {
 } from "../ui/card";
 import { ScrollArea } from "../ui/scroll-area";
 
-export const TermsAndConditions = () => {
+type TermsAndConditionsProps = {
+	onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
+};
+
+export const TermsAndConditions = ({ onScroll }: TermsAndConditionsProps) => {
 	return (
-		<div className="min-h-screen bg-background py-8">
+		<div className="h-screen bg-background py-8">
 			<div className="container mx-auto px-4 max-w-4xl">
 				<div className="text-center mb-8">
 					<h1 className="text-4xl font-bold mb-4">
@@ -26,7 +30,10 @@ export const TermsAndConditions = () => {
 					</p>
 				</div>
 
-				<ScrollArea className="h-[600px]">
+				<ScrollArea
+					className="h-[500px]"
+					onScroll={onScroll}
+				>
 					<Card>
 						<CardHeader>
 							<CardTitle>VeriNest Platform Agreement</CardTitle>
