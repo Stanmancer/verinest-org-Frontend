@@ -377,57 +377,24 @@ export const PersonalInformationForm = ({
 							>
 								Date of Birth *
 							</Label>
-							<Popover>
-								<PopoverTrigger asChild>
-									<Button
-										variant="outline"
-										className={cn(
-											"w-full justify-start text-left font-normal",
-											!formData.dateOfBirth &&
-												"text-muted-foreground",
-											errors.dateOfBirth &&
-												"border-red-500"
-										)}
-									>
-										<CalendarIcon className="mr-2 h-4 w-4" />
-										{formData.dateOfBirth ? (
-											format(
-												new Date(formData.dateOfBirth),
-												"PPP"
-											)
-										) : (
-											<span>Pick your date of birth</span>
-										)}
-									</Button>
-								</PopoverTrigger>
-								<PopoverContent
-									className="w-auto p-0"
-									align="start"
-								>
-									<Calendar
-										mode="single"
-										selected={
-											formData.dateOfBirth
-												? new Date(formData.dateOfBirth)
-												: undefined
-										}
-										onSelect={(date) =>
-											handleInputChange(
-												"dateOfBirth",
-												date ? date.toISOString() : ""
-											)
-										}
-										disabled={(date) =>
-											date > new Date() ||
-											date < new Date("1900-01-01")
-										}
-										initialFocus
-										captionLayout="dropdown-buttons"
-										fromYear={1900}
-										toYear={new Date().getFullYear()}
-									/>
-								</PopoverContent>
-							</Popover>
+							<Input
+								id="dateOfBirth"
+								type="date"
+								value={formData.dateOfBirth}
+								onChange={(e) =>
+									handleInputChange(
+										"dateOfBirth",
+										e.target.value
+									)
+								}
+								min="1900-01-01"
+								max={new Date().toISOString().split("T")[0]}
+								className={cn(
+									"block w-full rounded-md border px-3 py-2",
+									errors.dateOfBirth && "border-red-500"
+								)}
+							/>
+
 							{errors.dateOfBirth && (
 								<p className="text-red-500 text-xs mt-1">
 									{errors.dateOfBirth}
