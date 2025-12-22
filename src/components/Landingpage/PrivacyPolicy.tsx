@@ -2,7 +2,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 
-export const PrivacyPolicy = () => {
+type TermsAndConditionsProps = {
+	onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
+};
+
+export const PrivacyPolicy  = ({ onScroll }: TermsAndConditionsProps) => {
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -17,7 +21,7 @@ export const PrivacyPolicy = () => {
           </p>
         </div>
 
-        <ScrollArea className="h-[600px]">
+        <ScrollArea className="h-[500px]" onScroll={onScroll}>
           <Card>
             <CardHeader>
               <CardTitle>VeriNest Privacy Policy</CardTitle>
